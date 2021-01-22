@@ -1,41 +1,32 @@
-import {useState} from "react";
-import { UseUsersDispatch } from "../shared/users.context";
+import { Component } from "react";
+import UsersContext from "../shared/users.context";
 
 /** Renders a form to add a user with event handler */
-function UserForm() {
-  // Access users dispatch
-  const dispatch = UseUsersDispatch();
+class UserForm extends Component {
 
-  // Create username state hook
-  const [userName, setUserName] = useState("");
-
-  /** Form submission event handler */
-  const handleSubmit = event => {
+  handleSubmit = event => {
     event.preventDefault();
     // Dispatch new add user
-    dispatch({ type: "add", user: { name: userName } });
-    // Clear out username state
-    setUserName("");
-  };
+    this.context.addUser(this.context.username)
+  }
 
-  /** Username input change event handler */
-  const handleChange = event => {
-    // Update username state to input value
-    setUserName(event.target.value);
-  };
+  render() {
+    const { username, onChangeUsername } = this.context
 
-  // Render user form
-  return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="userName"
-        value={userName}
-        onChange={handleChange}
-      />
-      <button>Add {userName || "user"}</button>
-    </form>
-  );
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <input
+          type="text"
+          name="userName"
+          value={username}
+          onChange={onChangeUsername}
+        />
+        <button>Add {username || "user"}</button>
+      </form>
+    )
+  }
 }
+
+UserForm.contextType = UsersContext;
 
 export default UserForm;

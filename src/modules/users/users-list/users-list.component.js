@@ -1,22 +1,24 @@
-import { UseUsersState } from "../shared/users.context";
+import { Component } from 'react'
+import UsersContext from "../shared/users.context";
 
 /** Renders a list of users */
-function UsersList() {
-  // Get users state
-  const usersState = UseUsersState();
-
-  // Render users list
-  return (
-    <div className="list-container">
-      <ul>
-        {/* Loop through each user */}
-        {usersState.users.map(function(user, index) {
-          return <li key={index}>{user.name}</li>;
-        })}
-      </ul>
-    </div>
-    
-  );
+class UsersList extends Component {
+  render() {
+    const { users } = this.context
+    return (
+      <div className="list-container">
+        <ul>
+          {/* Loop through each user */}
+          {users.map(function(user, index) {
+            return <li key={index}>{user}</li>;
+          })}
+        </ul>
+      </div>
+      
+    );
+  }
 }
+
+UsersList.contextType = UsersContext
 
 export default UsersList;
